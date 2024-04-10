@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     // some member variables for the game
     var secretNumber:Int = 0
     var guessCount:Int = 0
+    var finished:Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +34,9 @@ class ViewController: UIViewController {
 
     @IBAction func enterTapped(_ sender: UIButton)
     {
-        
+        if(finished) {
+            return;
+        }
         if let enteredGuess:Int = Int(guessField.text!)
         {
             print("Guess Entered");
@@ -41,17 +44,32 @@ class ViewController: UIViewController {
             
             if enteredGuess > secretNumber
             {
-                firstResponseLabel.text = "Too high - try again!"
+                firstResponseLabel.text = "Too high - please try again!"
             }
             else if enteredGuess < secretNumber
             {
-                firstResponseLabel.text = "Too low - try again!"
+                firstResponseLabel.text = "Too low - please try again!"
             }
             
             if (enteredGuess == secretNumber)
             {
-                firstResponseLabel.text = "That's correct - in \(guessCount) tries!"
-                secondResponseLabel.text = "Tap Reset to play again."
+                finished = true;
+//                firstResponseLabel.text = "That's correct - in \(guessCount) tries!"
+//                secondResponseLabel.text = "Tap Reset to play again."
+                // create an alert view
+                let alert = UIAlertController(
+                                title: "Correct!",
+                                message: "You guessed in \(guessCount) tries!",
+                                preferredStyle: UIAlertControllerStyle.alert)
+                                
+                // add an action (button)
+                alert.addAction(UIAlertAction(
+                                title: "Cool!",
+                                style: UIAlertActionStyle.cancel,
+                                handler: nil))
+                                
+                // show the alert
+                self.present(alert, animated: true, completion: nil)
             }
             else
             {
@@ -69,6 +87,7 @@ class ViewController: UIViewController {
     }
     @IBAction func resetTapped(_ sender: UIButton)
     {
+        finished = false;
         resetGame()
     }
     
@@ -76,7 +95,8 @@ class ViewController: UIViewController {
     {
         print("The game has been reset...")
         
-        secretNumber = Int(arc4random() % 100)        
+        secretNumber = Int(arc4random() % 1000)
+        print("some text, and then an integer \(secretNumber) like this")
         guessCount = 1
         
         tryCountLabel.text = String(guessCount)
