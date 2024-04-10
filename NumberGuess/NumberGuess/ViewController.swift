@@ -54,6 +54,7 @@ class ViewController: UIViewController {
             if (enteredGuess == secretNumber)
             {
                 finished = true;
+                guessField.isEnabled = false;
 //                firstResponseLabel.text = "That's correct - in \(guessCount) tries!"
 //                secondResponseLabel.text = "Tap Reset to play again."
                 // create an alert view
@@ -88,6 +89,7 @@ class ViewController: UIViewController {
     @IBAction func resetTapped(_ sender: UIButton)
     {
         finished = false;
+        guessField.isEnabled = true;
         resetGame()
     }
     
